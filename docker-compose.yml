@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  app:
+    build: ./Docker
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html
+      - ./vendor:/var/www/vendor
+      - .:/app
+    environment:
+      PHP_ERROR_REPORTING: E_ALL
+      PHP_DISPLAY_ERRORS: 1
+
+  db:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d

@@ -1,5 +1,12 @@
 CREATE DATABASE IF NOT EXISTS appdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+use appdb;
+CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'secret';
+
+GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'localhost';
+
+FLUSH PRIVILEGES;
+
 CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
                        username VARCHAR(50) UNIQUE NOT NULL,
@@ -10,4 +17,5 @@ CREATE TABLE users (
 
 -- wachtwoord = secret
 INSERT INTO users (username, password_hash, google2fa_enabled)
-VALUES ('admin', '$2y$10$boZ1JZ4zSZR0Jw6CeV6PmuSgchdEGHD1kUL9Q5S6uTk4p2UVtuTui', 0);
+VALUES ('admin', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0);
+

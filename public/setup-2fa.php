@@ -29,7 +29,7 @@ if (empty($user['google2fa_secret'])) {
     $secret = $user['google2fa_secret'];
 }
 
-$qrText = $google2fa->getQRCodeUrl('MijnApp', $user['username'], $secret);
+$qrText = $google2fa->getQRCodeUrl('NHL Stenden/AD CS&S', $user['username'], $secret);
 
 $renderer = new ImageRenderer(new RendererStyle(200), new SvgImageBackEnd());
 $writer = new Writer($renderer);

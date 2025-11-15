@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../vendor/autoload.php';
+require './database.lib.php';
 
 use PragmaRX\Google2FA\Google2FA;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -11,30 +12,44 @@ use BaconQrCode\Writer;
 if (!isset($_SESSION['user_id'])) {
     die("Je moet ingelogd zijn.");
 }
+$idUser = $_SESSION['user_id'];
 
-$pdo = new PDO("mysql:host=db;dbname=appdb", "appuser", "secret");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$user = getUserInfo($idUser);
 $google2fa = new Google2FA();
 
 if (empty($user['google2fa_secret'])) {
     $secret = $google2fa->generateSecretKey();
+    $pdo = getDB();
     $stmt = $pdo->prepare("UPDATE users SET google2fa_secret = ?, google2fa_enabled = 1 WHERE id = ?");
     $stmt->execute([$secret, $user['id']]);
-} else {
-    $secret = $user['google2fa_secret'];
 }
-
+else {
+    die("2fa already setup");
+}
 $qrText = $google2fa->getQRCodeUrl('NHL Stenden/AD CS&S', $user['username'], $secret);
 
 $renderer = new ImageRenderer(new RendererStyle(200), new SvgImageBackEnd());
 $writer = new Writer($renderer);
 $qrCode = $writer->writeString($qrText);
 
-echo "<h2>Scan deze QR-code in Google Authenticator</h2>";
-echo "<img src='data:image/svg+xml;base64," . base64_encode($qrCode) . "' />";
-echo "<p>Secret: $secret</p>";
+$imgData = "data:image/svg+xml;base64," . base64_encode($qrCode);
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Setup 2FA</title>
+</head>
+<body>
+
+</body>
+</html>
+<h1>Instellen van de tweede factor authenticatie</h1>
+<h2>Scan deze QR-code in Google Authenticator</h2>
+<img src="<?= $imgData ?>" />
+<p>Secret: <?= $secret ?> </p>
+<form method="POST" action="verify-2fa.php">
+    <input type="text" name="code" placeholder="2FA code" required>
+    <button type="submit">Verifiëren</button>
+</form>

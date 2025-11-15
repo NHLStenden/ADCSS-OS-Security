@@ -17,5 +17,12 @@ CREATE TABLE users (
 
 -- wachtwoord = secret
 INSERT INTO users (username, password_hash, google2fa_enabled)
-VALUES ('admin', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0);
+VALUES ('admin', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('jan', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('jelle', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('joris', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('jos', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('janneke', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0),
+       ('josefien', '$2y$12$wY.bKKve7bYoEGMc.q9TpOPEoryNF3yffQGmo5geUjrTqjfrUSVfm', 0)
 
+       ;

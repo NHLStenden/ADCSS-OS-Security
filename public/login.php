@@ -23,6 +23,7 @@ $idUser = $user['id'];
 if ($user && password_verify($password, $hash)) {
     $_SESSION['logged_in'] = true;
     $_SESSION['user_id'] = $idUser;
+    $_SESSION['username'] = $username;
 
     if ($isGoogle2faEnabled) {
         header("Location: verify-2fa.php");
